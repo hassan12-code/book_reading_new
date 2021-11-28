@@ -1,14 +1,26 @@
 import 'package:book_reading/models/user.dart';
 import 'package:book_reading/utils/utils.dart';
+import 'package:book_reading/widgets/home_widget/rating.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class BookInformation extends StatelessWidget {
-  const BookInformation({
+class BookInformation extends StatefulWidget {
+  BookInformation({
     Key? key,
     required this.book,
+    required this.onShowingDetails,
   }) : super(key: key);
 
   final Book book;
+
+  final Function(bool) onShowingDetails;
+
+  @override
+  State<BookInformation> createState() => _BookInformationState();
+}
+
+class _BookInformationState extends State<BookInformation> {
+  bool isShowingDetails = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,25 +37,94 @@ class BookInformation extends StatelessWidget {
             )
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            isShowingDetails == true
+                ? BookDetails(details: widget.book.details)
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Rating(rating: widget.book.rating),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Text(widget.book.title),
+                        Text(widget.book.author),
+                      ],
+                    ),
+                  ),
+            SizedBox(
+              height: 50,
+              child: Row(
                 children: [
-                  Text(book.rating.toString()),
-                  Icon(
-                    Icons.star_outlined,
-                    color: Colors.yellow,
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        if (isShowingDetails == false) {
+                          isShowingDetails = true;
+                        } else {
+                          isShowingDetails = false;
+                        }
+                        setState(() {});
+                        widget.onShowingDetails(isShowingDetails);
+                      },
+                      child: Container(
+                        child: Center(
+                          child: Text(
+                            'Details',
+                            style: GoogleFonts.poppins(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25),
+                          bottomRight: Radius.circular(25),
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Read',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
-              Text(book.title),
-              Text(book.author),
-            ],
-          ),
+            ),
+          ],
         ));
+  }
+}
+
+class BookDetails extends StatelessWidget {
+  BookDetails({
+    Key? key,
+    required this.details,
+  }) : super(key: key);
+
+  final String details;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Text(details, style: GoogleFonts.poppins(fontSize: 12)),
+    );
   }
 }

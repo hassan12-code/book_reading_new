@@ -5,24 +5,20 @@ class BookCover extends StatelessWidget {
   const BookCover({
     Key? key,
     required this.bookCover,
-    this.height,
-    this.width,
+    this.height = 70,
+    this.width = 70,
   }) : super(key: key);
 
   final String bookCover;
-  final double? height;
-  final double? width;
+  final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: -20,
-      left: 25,
-      child: Image(
-        image: NetworkImage(bookCover),
-        height: height ?? 70,
-        width: width ?? 70,
-      ),
+    return Image(
+      image: NetworkImage(bookCover),
+      height: height,
+      width: width,
     );
   }
 }

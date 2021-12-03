@@ -31,34 +31,40 @@ class _ReadingSectionState extends State<ReadingSection> {
             style: TextStyle(fontSize: 25),
           ),
         ),
-        Expanded(
+        Container(
+          height: screenHeight(context) * 0.4,
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 25),
             scrollDirection: Axis.horizontal,
-            children: widget.books.map((book) {
-              return Padding(
-                padding: const EdgeInsets.only(right: 25.0),
-                child: Center(
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      BookInformation(
-                        book: book,
-                        onShowingDetails: (bool isShowingDetails) {
-                          print("I AM RUNNING HERE");
-                          setState(() {
-                            isShowingCover = !isShowingDetails;
-                          });
-                        },
-                      ),
-                      isShowingCover == true
-                          ? BookCover(bookCover: book.bookCover)
-                          : SizedBox(),
-                    ],
+            children: widget.books.map(
+              (book) {
+                return Padding(
+                  key: Key(book.title),
+                  padding: const EdgeInsets.only(right: 25.0),
+                  child: Center(
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        BookInformation(
+                          book: book,
+                          onShowingDetails: (bool isShowingDetails) {
+                            setState(() {
+                              isShowingCover = !isShowingDetails;
+                            });
+                          },
+                        ),
+                        isShowingCover == true
+                            ? Positioned(
+                                top: -20,
+                                left: 25,
+                                child: BookCover(bookCover: book.bookCover))
+                            : SizedBox(),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }).toList(),
+                );
+              },
+            ).toList(),
           ),
         )
       ],

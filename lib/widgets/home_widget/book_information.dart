@@ -1,4 +1,5 @@
 import 'package:book_reading/models/user.dart';
+import 'package:book_reading/screens/book_view.dart';
 import 'package:book_reading/utils/utils.dart';
 import 'package:book_reading/widgets/home_widget/rating.dart';
 import 'package:flutter/material.dart';
@@ -87,19 +88,25 @@ class _BookInformationState extends State<BookInformation> {
                     ),
                   ),
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          bottomRight: Radius.circular(25),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(BookView.routeName,
+                            arguments: widget.book);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                            bottomRight: Radius.circular(25),
+                          ),
                         ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Read',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
+                        child: Center(
+                          child: Text(
+                            'Read',
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),

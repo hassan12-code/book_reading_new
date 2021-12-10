@@ -3,6 +3,7 @@ import 'package:book_reading/utils/utils.dart';
 import 'package:book_reading/widgets/home_widget/book_cover.dart';
 import 'package:book_reading/widgets/home_widget/book_of_the_day.dart';
 import 'package:book_reading/widgets/home_widget/circle_notch.dart';
+import 'package:book_reading/widgets/home_widget/continue_reading.dart';
 import 'package:book_reading/widgets/home_widget/rating.dart';
 import 'package:book_reading/widgets/home_widget/reading_section.dart';
 import 'package:flutter/material.dart';
@@ -43,11 +44,7 @@ class Home extends StatelessWidget {
                 ),
                 BestOfTheDay(book: getBestOfTheDayBook(user.books)),
                 //TODO: Create Continue Reading Widget
-                Container(
-                  height: 150,
-                  width: screenWidth(context),
-                  color: Colors.red,
-                )
+                // ContinueReading(book: user.books.first),
               ],
             ),
           ],

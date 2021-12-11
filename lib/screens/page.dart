@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:book_reading/models/BookmarkPoint.dart';
 import 'package:book_reading/models/last_point.dart';
 import 'package:book_reading/models/user.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,8 @@ class PageReading extends StatefulWidget {
 
 class _PageReadingState extends State<PageReading> {
   int currentPage = 1;
+  int bookmarkedPage = 1;
+  Color iconColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +30,23 @@ class _PageReadingState extends State<PageReading> {
         title: Text(args.chapter.title),
         centerTitle: true,
         backgroundColor: Colors.black,
+         actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              setState(() {
+                bookmarkedPage = currentPage; // stores current page number on button press
+                print(Text("Bookmarked pageNo = : $bookmarkedPage"),);
+                iconColor = Colors.amber;
+              });
+              setBookmark(
+                bookTitle: args.book.title,
+                chapterNo: args.chapter.chapterNo,
+                bookmarkPage: bookmarkedPage,
+              ); 
+            },
+            icon: Icon(Icons.star,color: iconColor,),
+          ),
+        ],
       ),
       body: Center(
           child: SafeArea(
@@ -87,6 +107,23 @@ class _PageReadingState extends State<PageReading> {
 
     _pref.setString("lastPoint", jsonEncode(lastPoint.toJson()));
   }
+  // Bookmark function
+  void setBookmark(
+  {
+    required String bookTitle,
+    required int chapterNo,
+    required int bookmarkPage, 
+  }) async{
+    SharedPreferences _pr = await SharedPreferences.getInstance();
+    final bookmarkPoint = BookmarkPoint(
+      bookTitle: bookTitle,
+      chapterNo: chapterNo,
+      bookmarkPage: bookmarkPage,
+    );
+
+    _pr.setString("bookmarkPoint", jsonEncode(bookmarkPoint.toJSON()));
+  }
+
 }
 
 class PageReadingArguments {
